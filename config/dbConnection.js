@@ -1,21 +1,29 @@
-/* importar o modulo */
-var mongo = require('mongodb');
-var connMongoDB = function(){
+var mongo = require("mongodb").MongoClient;
+var assert = require("assert");
 
-module.exports = function(){
-  var db = new mongo.Db(
-    'got',
-    new mongo.Server(
-      'localhost',
-      27017,
-      {}
-    ),
-    {}
-  );
+const url = "mongodb://localhost:27017";
+const dbName = "got";
 
-  return db;
-}
-  module.exports = function(){
-    return connMongoDB;
+var connMongoDB = function(dados) {
+  mongo.connect(url, function(err, client) {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+    const db = client.db(dbName);
+    query(db, dados);
+    client.close();
+  });
+};
+
+function query(db, dados) {
+  var collection = db.collection(dados.collection);
+  switch (dados.operacao) {
+    case "inserir":
+    collection.insertOne(dados.usuario, dados.callback);
+    break;
+    default:
+    break;
   }
+}
+  module.exports = function() {
+  return connMongoDB;
 }
