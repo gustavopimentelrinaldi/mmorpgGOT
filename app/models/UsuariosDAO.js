@@ -11,6 +11,7 @@ UsuariosDAO.prototype.inserirUsuario = function(usuario, res) {
     res.send("olá Marilene");
     }
   };
+  mongoclient.close();
   this._connection(dados);
 };
 module.exports = function() {
